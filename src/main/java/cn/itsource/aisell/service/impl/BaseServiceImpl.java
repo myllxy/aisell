@@ -20,20 +20,21 @@ import java.util.List;
 
 /**
  * 父接口的实现  这个类就是一个父类,根本就不用它创建对象
+ *
  * @param <T>
  * @param <ID>
  */
-@Transactional(readOnly = true,propagation = Propagation.SUPPORTS)
-public abstract class BaseServiceImpl<T,ID extends Serializable> implements IBaseService<T,ID> {
+@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+public abstract class BaseServiceImpl<T, ID extends Serializable> implements IBaseService<T, ID> {
 
     /**
      * 这个地方咱们注入的是BaseRepository的实现
-     *      其实对应的是它的所有子接口的实现(注:它有很多子接口)
-     *      EmployeeRepository
-     *      DepartmentRepository
+     * 其实对应的是它的所有子接口的实现(注:它有很多子接口)
+     * EmployeeRepository
+     * DepartmentRepository
      */
     @Autowired
-    private BaseRepository<T,ID> baseRepository;
+    private BaseRepository<T, ID> baseRepository;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -72,11 +73,11 @@ public abstract class BaseServiceImpl<T,ID extends Serializable> implements IBas
         //1.拿到排序对象
         Sort sort = query.createSort();
         //2.拿到分页对象
-        Pageable pageable = new PageRequest(query.getJpaPage(),query.getPageSize(),sort);
+        Pageable pageable = new PageRequest(query.getJpaPage(), query.getPageSize(), sort);
         //3.拿到查询规则
         Specification spec = query.createSpec();
         //4.进行查询
-        return baseRepository.findAll(spec,pageable);
+        return baseRepository.findAll(spec, pageable);
     }
 
     @Override
@@ -85,7 +86,7 @@ public abstract class BaseServiceImpl<T,ID extends Serializable> implements IBas
         Query query = entityManager.createQuery(jpql);
         //2.把参数放进去
         for (int i = 0; i < params.length; i++) {
-            query.setParameter(i+1,params[i]);
+            query.setParameter(i + 1, params[i]);
         }
         //3.获到数据
         return query.getResultList();

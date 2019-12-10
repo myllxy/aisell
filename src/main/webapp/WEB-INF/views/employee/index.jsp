@@ -10,9 +10,9 @@
 <head>
     <title>Title</title>
     <%--引入头部文件--%>
-    <%@include file="/WEB-INF/views/head.jsp"%>
+    <%@include file="/WEB-INF/views/head.jsp" %>
     <%--引入当前模块对应的js--%>
-    <script src="/js/model/employee.js"></script>
+    <script src="${pageContext.request.contextPath}/js/model/employee.js"></script>
 </head>
 <body>
 <div id="toolbar" style="padding:5px;height:auto">
@@ -24,7 +24,7 @@
     <form id="searchForm" method="post">
         用户名: <input name="username" class="easyui-textbox" style="width:80px">
         邮件: <input name="email" class="easyui-textbox" style="width:80px">
-        <a href="#"  data-method="search"  class="easyui-linkbutton" iconCls="icon-search">查询</a>
+        <a href="#" data-method="search" class="easyui-linkbutton" iconCls="icon-search">查询</a>
     </form>
 </div>
 <table id="datagrid" class="easyui-datagrid"

@@ -16,10 +16,11 @@ public class EmployeeQuery extends BaseQuery {
 
     /**
      * 返回咱们的查询规则(查询条件都在这个类中)
+     *
      * @return
      */
     @Override
-    public Specification createSpec(){
+    public Specification createSpec() {
         Specification<Employee> spec = Specifications.<Employee>and()
                 .like(StringUtils.isNotBlank(username), "username", "%" + username + "%")
                 .like(StringUtils.isNotBlank(email), "email", "%" + email + "%")

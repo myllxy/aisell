@@ -9,7 +9,9 @@ public class JsonResult {
     //失败后返回的原因
     private String msg;
 
-    public JsonResult(){}
+    public JsonResult() {
+    }
+
     public JsonResult(boolean success, String msg) {
         this.success = success;
         this.msg = msg;
