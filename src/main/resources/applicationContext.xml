@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/data/jpa
+       http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+">
+
+
+    <!--扫描dao层-->
+    <!--<context:component-scan base-package="cn.itsource.aisell.repository" />-->
+
+    <!--扫描service层-->
+    <context:component-scan base-package="cn.itsource.aisell.service"/>
+    <!--
+        1.domain -> 2.jdbc.properties -> 3.dataSource -> 4.EntityManagerFactory
+            -> 5.dao -> 6.service -> 7.集成SpringMVC -> 8.EasyUI
+    -->
+    <!--引入jdbc.properties  注意:必需写classpath-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!--配置dataSource-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <!--配置连接数据库的四大金刚 -->
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+
+    <!--
+        配置:EntityManagerFactory
+        alt+insert -》 jpa -》 最长的(LocalContainerEntityManagerFactoryBean)
+            1.数据源  2.建表策略 3.方言  4.是否显示sql
+    -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!-- packagesToScan:扫描包(JPA在扫描) -->
+        <property name="packagesToScan" value="cn.itsource.aisell.domain"/>
+        <!--
+            jpaVendorAdapter:JPA的适配器
+                JPA是一个ORM规范 -> 别人去实现(hibernate,openjpa,...)
+                Spring怎么知道我用的哪一个实现？ 告诉Spring用的是Hibernate
+        -->
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <!-- true:相当于update  false:啥都不做 -->
+                <property name="generateDdl" value="false"/>
+                <!-- 方言 -->
+                <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect"/>
+                <!-- 是否显示SQL -->
+                <property name="showSql" value="true"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!--创建一个JPA的真的事务对象-->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <!--支持事务注解-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!-- 扫描dao层,只要发现它扫描到的接口继承了 Repository 就会自动完成相应功能(实现类就有了) -->
+    <jpa:repositories base-package="cn.itsource.aisell.repository"
+                      entity-manager-factory-ref="entityManagerFactory"
+                      transaction-manager-ref="transactionManager"/>
+
+</beans>
