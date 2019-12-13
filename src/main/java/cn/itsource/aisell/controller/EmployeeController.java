@@ -75,10 +75,13 @@ public class EmployeeController extends BaseController {
          */
         if (id != null && "update".equals(_cmd)) {
             // 修改时才去数据库获取
-            return employeeService.findOne(id);
+            Employee employee = employeeService.findOne(id);
+            employee.setDepartment(null);
+            return employee;
         }
         return null;
     }
+
     /**
      * 修改功能
      *
