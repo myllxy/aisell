@@ -16,7 +16,7 @@ public class Employee extends BaseDomain {
     /* jpa为了做懒加载，其中的一些属性无法被序列化 */
     /* employee独享最终会转换成json格式发送给前台 */
     /* 我们将这些属性用这个注解将其排除在这个过程中 */
-    @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
+    // @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
     @JoinColumn(name = "department_id")
     /* 经过jpa之后department已经成为一个代理对象 */
     private Department department;
