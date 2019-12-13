@@ -2,17 +2,12 @@
 function objFormat(v) {
     return v ? v.name : "";
 }
-
-function imgFormat(v) {
-    return `<image src="${v}" style="width: 50px;height: 50px;" />`;
-}
-
 $(function () {
     // 提取公共属性
     let datagrid = $("#datagrid");
     let searchForm = $("#searchForm");
     let formDialog = $("#formDialog");
-    let employeeForm = $("#employeeForm");
+    let roleForm = $("#roleForm");
     // $("*[data-method]")是将所有有data-method属性的方法绑定事件
     $("*[data-method]").on("click", function () {
         // 1.拿到当前对应的方法名
@@ -39,14 +34,14 @@ $(function () {
          * */
         save() {
             // 1.准备相应的路径
-            let url = "/employee/save";
+            let url = "/role/save";
             // 2.获取隐藏域的id(如果id有值,就修改路径)
-            let employeeId = $("#employeeId").val();
-            if (employeeId) {
-                url = "/employee/update?_cmd=update";
+            let roleId = $("#roleId").val();
+            if (roleId) {
+                url = "/role/update?_cmd=update";
             }
             // call 'submit' method of form plugin to submit the form
-            employeeForm.form('submit', {
+            roleForm.form('submit', {
                 url: url,
                 onSubmit: function () {
                     // do some check
@@ -77,15 +72,8 @@ $(function () {
             console.debug(row);
             // 弹出对话框,固定居中
             formDialog.dialog("open").dialog("center");
-            employeeForm.form('load', row);
-            /* 隐藏密码显示 */
-            $("#willhide").hide();
-            $("#willhide input").passwordbox("disable");
-            // 完成部门的回显
-            if (row.department) {
-                row["department.id"] = row.department.id;
-            }
-            employeeForm.form('reload');
+            roleForm.form('load', row);
+            roleForm.form('reload');
         },
         delete() {
             //1.获取选中的行

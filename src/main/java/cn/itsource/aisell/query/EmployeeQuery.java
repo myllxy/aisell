@@ -13,6 +13,7 @@ public class EmployeeQuery extends BaseQuery {
     private String username;
     private String email;
     private Integer age;
+    private String department;
 
     /**
      * 返回咱们的查询规则(查询条件都在这个类中)
@@ -25,8 +26,21 @@ public class EmployeeQuery extends BaseQuery {
                 .like(StringUtils.isNotBlank(username), "username", "%" + username + "%")
                 .like(StringUtils.isNotBlank(email), "email", "%" + email + "%")
                 .gt(age != null, "age", age)
+                .eq(department != null, "department.id", department)
                 .build();
         return spec;
+    }
+
+
+    public EmployeeQuery() {
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     public String getUsername() {
@@ -51,5 +65,22 @@ public class EmployeeQuery extends BaseQuery {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public EmployeeQuery(String username, String email, Integer age, String department) {
+        this.username = username;
+        this.email = email;
+        this.age = age;
+        this.department = department;
+    }
+
+    @Override
+    public String toString() {
+        return "EmployeeQuery{" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                ", department='" + department + '\'' +
+                '}';
     }
 }

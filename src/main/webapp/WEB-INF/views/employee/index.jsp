@@ -24,14 +24,54 @@
     <form id="searchForm" method="post">
         用户名: <input name="username" class="easyui-textbox" style="width:80px">
         邮件: <input name="email" class="easyui-textbox" style="width:80px">
+        部门：<input id="department" class="easyui-combobox" name="department"
+                  data-options="valueField:'id',textField:'name',url:'/department/list'"/>
         <a href="#" data-method="search" class="easyui-linkbutton" iconCls="icon-search">查询</a>
     </form>
+    <div id="formDialog" class="easyui-dialog" title="My Dialog" hidden="hidden"
+         style="width:100%;max-width:400px;padding:30px 60px;"
+         data-options="iconCls:'icon-save',resizable:true,modal:true,closed: true">
+        <form id="employeeForm" method="post">
+            <%--隐藏域id,用于在后面判断操作是新增还是修改--%>
+            <input id="employeeId" type="hidden" name="id"/>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" name="username" style="width:100%"
+                       data-options="label:'Name:',required:true">
+            </div>
+            <div style="margin-bottom:10px">
+                <%--validType:'email'为什么不是想象中的样子--%>
+                <input class="easyui-textbox" name="email" style="width:100%"
+                       data-options="label:'Email:',required:true,validType:'email'">
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" name="age" style="width:100%"
+                       data-options="label:'age:',required:true">
+            </div>
+            <div id="willhide" style="margin-bottom:10px">
+                <input class="easyui-passwordbox" name="password" style="width:100%"
+                       data-options="label:'password:',required:true">
+            </div>
+            <%-- 在下拉框里选择的是name,传递出去的是id --%>
+            <%-- 所以是valueField:'id',textField:'name' --%>
+            <div style="margin-bottom:10px">
+                <input class="easyui-combobox" name="department.id"
+                       data-options="label:'department:',required:true,valueField:'id',textField:'name',panelHeight:'auto',url:'/department/list'"/>
+            </div>
+        </form>
+        <div id="bb">
+            <a href="#" class="easyui-linkbutton" data-method="save" data-options="iconAlign:'right'">保存</a>
+            <a href="#" class="easyui-linkbutton" data-method="close" data-options="iconAlign:'right'">关闭</a>
+        </div>
+    </div>
 </div>
 <table id="datagrid" class="easyui-datagrid"
        data-options="url:'/employee/page',fitColumns:true,singleSelect:true,fit:true,pagination:true,toolbar:'#toolbar'">
     <thead>
     <tr>
         <th data-options="field:'id',width:100">编码</th>
+        <%--如果不加formatter:imgFormat显示的就是图片的路径--%>
+        <th data-options="field:'headImage',width:100,formatter:imgFormat">头像</th>
+        <th data-options="field:'department',width:100,formatter:objFormat">部门</th>
         <th data-options="field:'username',width:100">名称</th>
         <th data-options="field:'age',width:100">年龄</th>
         <th data-options="field:'password',width:100">密码</th>
