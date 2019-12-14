@@ -31,7 +31,7 @@ $(function () {
             employeeForm.form('clear');
             /* 因为修改操作隐藏了部分组件,所以在添加时需要重新显示 */
             $("#willhide").show();
-            $("#willhide input").passwordbox("enable");
+            $("#willhide input").textbox("enable");
         },
         /* 无论是修改界面还是新增界面都是使用这个save保存数据
          * 所以我们需要判断当前操作是新增还是修改，然后映射到
@@ -74,14 +74,14 @@ $(function () {
                 $.messager.alert('提示', '请选中一行再来修改，好嘛！', "warning");
                 return;
             }
-            console.debug(row);
             // 弹出对话框,固定居中
             formDialog.dialog("open").dialog("center");
             employeeForm.form('load', row);
             /* 隐藏密码显示 */
             $("#willhide").hide();
-            $("#willhide input").passwordbox("disable");
+            $("#willhide input").textbox("disable");
             // 完成部门的回显
+            console.debug(row)
             if (row.department) {
                 row["department.id"] = row.department.id;
             }

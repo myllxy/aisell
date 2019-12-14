@@ -48,7 +48,7 @@
                        data-options="label:'age:',required:true">
             </div>
             <div id="willhide" style="margin-bottom:10px">
-                <input class="easyui-passwordbox" name="password" style="width:100%"
+                <input class="easyui-textbox" name="password" style="width:100%"
                        data-options="label:'password:',required:true">
             </div>
             <%-- 在下拉框里选择的是name,传递出去的是id --%>
