@@ -13,7 +13,7 @@ public class Role extends BaseDomain {
     @JoinTable(name = "role_permission",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
-    private List<Permission> list = new ArrayList<>();
+    private List<Permission> permissions = new ArrayList<>();
 
     public Role() {
     }
@@ -38,5 +38,13 @@ public class Role extends BaseDomain {
     public Role(String name, String sn) {
         this.name = name;
         this.sn = sn;
+    }
+
+    public List<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
     }
 }

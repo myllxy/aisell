@@ -36,9 +36,9 @@
        data-options="url:'/role/page',fitColumns:true,singleSelect:true,fit:true,pagination:true,toolbar:'#toolbar'">
     <thead>
     <tr>
-        <th data-options="field:'id',width:100">编码</th>
-        <th data-options="field:'name',width:100">名称</th>
-        <th data-options="field:'sn',width:100">sn</th>
+        <th data-options="field:'sn',width:20">编码</th>
+        <th data-options="field:'name',width:20">名称</th>
+        <th data-options="field:'permissions',width:100,formatter:permsFormat">权限</th>
     </tr>
     </thead>
 </table>

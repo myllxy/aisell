@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,8 +37,10 @@
     </script>
 </head>
 <body class="easyui-layout">
-<div data-options="region:'north',border:false" style="height:80px;background:deeppink;">
+<div data-options="region:'north',border:false" style="height:80px;background:#ff6827;">
     <div><h1>AiSell智能销售系统</h1></div>
+    欢迎<a href="#"><%--<shiro:principal property="username"/>--%></a>登录&emsp;<a href="/logout">注销</a>
+
 </div>
 <div id="menuid" data-options="region:'west',split:true" style="width:150px;padding:10px;">west content</div>
 <div data-options="region:'east',split:true,collapsed:true" style="width:100px;padding:10px;">east region</div>
