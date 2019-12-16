@@ -12,7 +12,8 @@
        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
 ">
 
-
+    <!-- 确保在springmvc中可以使用shiro -->
+    <import resource="classpath:applicationContext-shiro.xml"/>
     <!--扫描dao层-->
     <!--<context:component-scan base-package="cn.itsource.aisell.repository" />-->
 

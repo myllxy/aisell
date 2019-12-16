@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
-  User: LXY
-  Date: 19/12/15
-  Time: 10:47
+  User: Administrator
+  Date: 2019/12/14
+  Time: 15:17
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -11,6 +11,8 @@
     <title>Title</title>
 </head>
 <body>
-aaaaa
+
+    <h1>亲，没有权限！ 这有一个神奇的二维码！！</h1>
+
 </body>
 </html>

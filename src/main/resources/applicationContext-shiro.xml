@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <!--
+        Shiro的核心对象(权限管理器)
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        securityManager.setRealm(jpaRealm)
+    -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myRealm"/>
+    </bean>
+    <bean id="myRealm" class="cn.itsource.aisell.shiro.MyRealm">
+        <!--Realm的名称-->
+        <property name="name" value="myRealm"/>
+        <property name="credentialsMatcher">
+            <!-- 配置哈希密码匹配器 -->
+            <!-- 数据库中的密码是按照一定的加密方式和迭代次数加密的 -->
+            <!-- 我们判断登录成功的方式是比对客户端的输入密码加密后和数据库密码是否相同 -->
+            <!-- 客户端密码加密方式必须和数据库密码生成加密方式相同 -->
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <!--加密方式:MD5-->
+                <property name="hashAlgorithmName" value="MD5"/>
+                <!--迭代次数-->
+                <property name="hashIterations" value="10"/>
+            </bean>
+        </property>
+    </bean>
+    <!-- 这三个配置好，可以支持注解权限 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+    <!--
+        shiro真正的过滤器(功能就是它完成的)
+            这个bean的名称必需和web.xml里的的代理过滤器名字相同
+     -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!--必需要用到权限管理器-->
+        <property name="securityManager" ref="securityManager"/>
+        <!--如果你没有登录，你会进入这个页面-->
+        <property name="loginUrl" value="/s/login.jsp"/>
+        <!--登录成功后，进入主页面-->
+        <property name="successUrl" value="/main"/>
+        <!--如果你没有权限，你会进入这个页面-->
+        <property name="unauthorizedUrl" value="/s/unauthorized.jsp"/>
+        <!-- 过滤描述
+            anon:不需要登录也可以访问
+            authc:登录与权限的拦截
+            perms:如果你有user:index的权限，你就可以访问:/s/permission.jsp
+        -->
+        <!--
+        <property name="filterChainDefinitions">
+            <value>
+                /login = anon
+                /s/permission.jsp = perms[user:index]
+                /** = authc
+            </value>
+        </property>
+        -->
+        <property name="filterChainDefinitionMap" ref="filterChainDefinitionMap"/>
+    </bean>
+
+    <!--
+        以前在四个创建Bean的方法中讲过
+        ShiroFilterMapFactory shiroFilterMapFactory = new shiroFilterMapFactory();
+        Map filterChainDefinitionMap=shiroFilterMapFactory.createMap();
+    -->
+    <!--拿到shiroFilterMapFactory里面的createMap方法的值 -->
+    <bean id="filterChainDefinitionMap" factory-bean="shiroFilterMapFactory" factory-method="createMap"/>
+    <!--配置返回shiro权限拦截的bean-->
+    <bean id="shiroFilterMapFactory" class="cn.itsource.aisell.common.ShiroFilterMapFactory"/>
+</beans>

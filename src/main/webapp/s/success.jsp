@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
-  User: LXY
-  Date: 19/12/15
-  Time: 10:47
+  User: Administrator
+  Date: 2019/12/14
+  Time: 15:15
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -11,6 +11,8 @@
     <title>Title</title>
 </head>
 <body>
-aaaaa
+
+    <h1>成功就是失败之父</h1>
+    <a href="/logout">登出</a>
 </body>
 </html>

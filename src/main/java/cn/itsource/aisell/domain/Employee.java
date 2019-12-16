@@ -3,6 +3,8 @@ package cn.itsource.aisell.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "employee")
@@ -20,18 +22,14 @@ public class Employee extends BaseDomain {
     @JoinColumn(name = "department_id")
     /* 经过jpa之后department已经成为一个代理对象 */
     private Department department;
+    @ManyToMany
+    @JoinTable(name = "employee_role",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles = new ArrayList<>();
 
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", age=" + age +
-                ", headImage='" + headImage + '\'' +
-                ", department=" + department +
-                '}';
-    }
+
 
     public Department getDepartment() {
         return department;
@@ -93,12 +91,11 @@ public class Employee extends BaseDomain {
         this.age = age;
     }
 
-    public Employee(String username, String password, String email, Integer age, String headImage) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.age = age;
-        this.headImage = headImage;
+    public List<Role> getRoles() {
+        return roles;
     }
 
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 }

@@ -24,7 +24,7 @@
                 </property>
                 <!-- No serializer:配置 objectMapper 为我们自定义扩展后的 CustomMapper,解决了返回对象有关系对象的报错问题 -->
                 <property name="objectMapper">
-                    <bean class="cn.itsource.aisell.common.CustomMapper"></bean>
+                    <bean class="cn.itsource.aisell.common.CustomMapper"/>
                 </property>
             </bean>
         </mvc:message-converters>
