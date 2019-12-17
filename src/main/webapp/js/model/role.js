@@ -3,7 +3,7 @@
 function permsFormat(v) {
     var ps = "";
     for(var p of v){
-        ps += p.name+" ";
+       ps += p.name+" ";
     }
     return ps;
 }
@@ -103,7 +103,7 @@ $(function () {
                 success:function(data){
                     // {"success":true,"msg":null}
                     var result = JSON.parse(data);
-                    //如果成功,刷新数据
+                   //如果成功,刷新数据
                     if(result.success){
                         //5.刷新页面
                         datagrid.datagrid("reload");
@@ -126,7 +126,7 @@ $(function () {
             //3.让用户确定是否删除
             $.messager.confirm('确认','您确认想要删除记录吗？',function(r){
                 if (r){
-                    //4.通过Ajax请求进行删除
+                   //4.通过Ajax请求进行删除
                     // 参数一:请求路径   参数二:请求参数   参数三:回调
                     // result:是后端返回的结果
                     $.get("/role/delete",{id:row.id},function (result) {

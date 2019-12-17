@@ -1,16 +1,16 @@
 <%--
   Created by IntelliJ IDEA.
-  User: LXY
-  Date: 19/12/12
-  Time: 21:07
+  User: Administrator
+  Date: 2019/12/10
+  Time: 11:38
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Title</title>
     <%--引入头部文件--%>
-    <%@include file="/WEB-INF/views/head.jsp" %>
+    <%@include file="/WEB-INF/views/head.jsp"%>
     <%--引入当前模块对应的js--%>
     <script src="${pageContext.request.contextPath}/js/model/role.js"></script>
 </head>
@@ -26,8 +26,7 @@
     <%--高级查询搜索框--%>
     <form id="searchForm" method="post">
         名称: <input name="name" class="easyui-textbox" style="width:80px">
-        sn: <input name="sn" class="easyui-textbox" style="width:80px">
-        <a href="#" data-method="search" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+        <a href="#"  data-method="search"  class="easyui-linkbutton" iconCls="icon-search">查询</a>
     </form>
 </div>
 
@@ -45,26 +44,51 @@
 
 
 <%--添加与修改的弹出窗口--%>
-<div id="formDialog" class="easyui-dialog" title="My Dialog" hidden="hidden"
-     style="width:100%;max-width:400px;padding:30px 60px;"
-     data-options="iconCls:'icon-save',resizable:true,modal:true,closed: true">
-    <form id="roleForm" method="post">
-        <%--隐藏域id,用于在后面判断操作是新增还是修改--%>
-        <input id="roleId" type="hidden" name="id"/>
-        <div style="margin-bottom:10px">
-            <input class="easyui-textbox" name="name" style="width:100%"
-                   data-options="label:'name:',required:true">
-        </div>
-        <div style="margin-bottom:10px">
-            <%--validType:'email'为什么不是想象中的样子--%>
-            <input class="easyui-textbox" name="sn" style="width:100%"
-                   data-options="label:'sn:',required:true">
+<div id="editDialog" class="easyui-dialog" title="数据管理" style="width: 720px;"
+     data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true,buttons:'#editButtons'">
+    <form id="editForm" method="post">
+        <input id="roleId" type="hidden" name="id" />
+        <table cellpadding="5">
+            <tr>
+                <td>
+                    编码:<input class="easyui-textbox" type="text" name="sn" data-options="required:true" />
+                    名称:<input class="easyui-textbox" type="text" name="name" data-options="required:true" />
+                </td>
+            </tr>
+        </table>
+        <div  class="easyui-layout" style="width:100%;height:400px;">
+            <div data-options="region:'west'" style="width:50%;">
+                <%--当前角色拥有的权限--%>
+                <table id="rolePermsGrid">
+                    <thead>
+                    <tr>
+                        <th data-options="field:'name',width:100">名称</th>
+                        <th data-options="field:'sn',width:100">编码</th>
+                        <th data-options="field:'url',width:100">路径</th>
+                    </tr>
+                    </thead>
+                </table>
+
+            </div>
+            <div data-options="region:'center'">
+                <%--所有权限--%>
+                <table id="allPermsGrid">
+                    <thead>
+                    <tr>
+                        <th data-options="field:'name',width:100">名称</th>
+                        <th data-options="field:'sn',width:100">编码</th>
+                        <th data-options="field:'url',width:100">路径</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
     </form>
     <div id="editButtons">
-        <a href="#" data-method="save" class="easyui-linkbutton">保存</a>
-        <a href="#" data-method="close" class="easyui-linkbutton">关闭</a>
+        <a href="#" data-method="save" class="easyui-linkbutton c1">保存</a>
+        <a href="#" data-method="close" class="easyui-linkbutton c5">关闭</a>
     </div>
 </div>
+
 </body>
 </html>
