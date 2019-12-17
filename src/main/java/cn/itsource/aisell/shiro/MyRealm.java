@@ -4,6 +4,7 @@ package cn.itsource.aisell.shiro;
 import cn.itsource.aisell.common.MD5utils;
 import cn.itsource.aisell.domain.Employee;
 import cn.itsource.aisell.service.IEmployeeService;
+import cn.itsource.aisell.service.IPermissionService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -23,16 +24,18 @@ import java.util.Set;
 public class MyRealm extends AuthorizingRealm {
     @Autowired
     IEmployeeService employeeService;
+    @Autowired
+    IPermissionService permissionService;
 
     //授权认证功能就写在这里面
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         //从数据库中获取角色并放且放到授权对象中
-        Set<String> roles = getRoles();
-        authorizationInfo.setRoles(roles);
+//        Set<String> roles = getRoles();
+//        authorizationInfo.setRoles(roles);
         //从数据库中获取权限并放且放到授权对象中
-        Set<String> perms = getPerms();
+        Set<String> perms = permissionService.findSnByname();
         authorizationInfo.setStringPermissions(perms);
         return authorizationInfo;
     }
@@ -52,7 +55,7 @@ public class MyRealm extends AuthorizingRealm {
      */
     private Set<String> getPerms() {
         Set<String> perms = new HashSet<>();
-        perms.add("*");
+//        perms.add("*");
         return perms;
     }
 
@@ -68,24 +71,24 @@ public class MyRealm extends AuthorizingRealm {
         // 2.1 拿到传过来的用户名
         String username = token.getUsername();
         // 2.2 根据用户名从数据库中拿到密码(以后会拿用户对象)
-        String password = this.getUsers(username);
         // 2.3 如果没有拿到密码(没有通过用户名拿到相应的用户->用户不存在)
-        if (password == null) {
+        Employee employee = employeeService.findByUsername(username);
+        if (employee == null) {
+            //如果用户为null,代表你的用户名没有查到数据=>这个用户是不存在的
             return null;
         }
-
         //记住：我们只在正常完成这里的功能，shiro会判断密码是否正确
         //3.返回 AuthenticationInfo这个对象
-        /**
-         * 咱们创建对象需要传的参数:
-         * Object principal:主体(可以乱写) -> 登录成功后，你在任何地方都可以获取到
-         * Object credentials：凭证(就是密码) -> 数据库中的密码
-         * credentials(密码)Salt:盐值
-         * String realmName : realm的名称(可以乱写)
+        /*
+          咱们创建对象需要传的参数:
+          Object principal:主体(可以乱写) -> 登录成功后，你在任何地方都可以获取到
+          Object credentials：凭证(就是密码) -> 数据库中的密码
+          credentials(密码)Salt:盐值
+          String realmName : realm的名称(可以乱写)
          */
         //拿到咱们的盐值对象(ByteSource)
         ByteSource salt = ByteSource.Util.bytes(MD5utils.SALT);
-        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(username, password, salt, "myRealm");
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(employee, employee.getPassword(), salt, getName());
         return authenticationInfo;
     }
 

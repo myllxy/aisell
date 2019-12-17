@@ -62,8 +62,15 @@
         </property>
         -->
         <property name="filterChainDefinitionMap" ref="filterChainDefinitionMap"/>
+        <property name="filters">
+            <map>
+                <!-- 这个"aisellPerms"就相当于"perms[" + e.getSn() + "]"中的perms -->
+                <!-- 就是通过这个名字key来找到其指定的自定义权限过滤器 -->
+                <entry key="aisellPerms" value-ref="aisellFilter"/>
+            </map>
+        </property>
     </bean>
-
+    <bean id="aisellFilter" class="cn.itsource.aisell.common.AisellAuthorizationFilter"/>
     <!--
         以前在四个创建Bean的方法中讲过
         ShiroFilterMapFactory shiroFilterMapFactory = new shiroFilterMapFactory();

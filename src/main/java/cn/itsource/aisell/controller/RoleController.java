@@ -73,9 +73,18 @@ public class RoleController extends BaseController {
          * 根据请求参数是否携带id,以及js传过来的url
          * 是否携带_cmd来确定是否应该查询数据库指定单行数据
          */
-        if (id != null && "update".equals(_cmd)) {
-            // 修改时才去数据库获取
-            return roleService.findOne(id);
+//        if (id != null && "update".equals(_cmd)) {
+//            // 修改时才去数据库获取
+//            return roleService.findOne(id);
+//        }
+//        return null;
+        if(id!=null && "update".equals(_cmd)){
+            //修改时才去数据库获取
+            Role role = roleService.findOne(id);
+            //把要修改的关连对象设置为null
+            //role.setPermissions(null);
+            role.getPermissions().clear();
+            return role;
         }
         return null;
     }

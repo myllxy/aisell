@@ -1,6 +1,8 @@
 package cn.itsource.aisell.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -19,7 +21,10 @@ public class Permission extends BaseDomain {
     private String descs;
     //编码
     private String sn;
-
+    //menu_id
+    @ManyToOne
+    @JoinColumn(name = "menu_id")
+    private Menu menu;
 
     public String getName() {
         return name;
@@ -57,11 +62,19 @@ public class Permission extends BaseDomain {
 
     }
 
-    public Permission(String name, String url, String descs, String sn) {
-
+    public Permission(String name, String url, String descs, String sn, Menu menu) {
         this.name = name;
         this.url = url;
         this.descs = descs;
         this.sn = sn;
+        this.menu = menu;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 }

@@ -103,24 +103,24 @@ $(function () {
                     $.get("/employee/delete", {id: row.id}, function (result) {
                         // 前台传来{success:true/false,msg:xxx}
                         /*1.可以这么写*/
-                        for (let i in result) {
-                            let data = result[i];
-                            if (i === "success" && data) {
-                                datagrid.datagrid("reload");
-                                itsource.close()
-                            } else {
-                                //给出错误提示
-                                $.messager.alert('提示', `删除失败，原因是:${result[msg]}`, "error");
-                            }
-                        }
-                        /*2.还可以这么写*/
-                        // if (result.success) {
-                        //     //5.刷新页面
-                        //     datagrid.datagrid("reload");
-                        // } else {
-                        //     //给出错误提示
-                        //     $.messager.alert('提示', `删除失败，原因是:${result.msg}`, "error");
+                        // for (let i in result) {
+                        //     let data = result[i];
+                        //     if (i === "success" && data) {
+                        //         datagrid.datagrid("reload");
+                        //         itsource.close()
+                        //     } else {
+                        //         //给出错误提示
+                        //         $.messager.alert('提示', `删除失败，原因是:${result.msg}`, "error");
+                        //     }
                         // }
+                        /*2.还可以这么写*/
+                        if (result.success) {
+                            //5.刷新页面
+                            datagrid.datagrid("reload");
+                        } else {
+                            //给出错误提示
+                            $.messager.alert('提示', `删除失败，原因是:${result.msg}`, "error");
+                        }
                     })
                 }
             });

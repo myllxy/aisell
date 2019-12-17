@@ -1,11 +1,8 @@
 
+//图片格式化
 // v:当前格子对应的数据(路径)
-function permsFormat(v) {
-    var ps = "";
-    for(var p of v){
-       ps += p.name+" ";
-    }
-    return ps;
+function imgFormat(v) {
+    return `<image src="${v}" style="width: 50px;height: 50px;" />`;
 }
 
 $(function () {
@@ -19,9 +16,6 @@ $(function () {
     var editDialog = $("#editDialog");
     //编辑表单
     var editForm = $("#editForm");
-    //两个grid
-    var rolePermsGrid = $("#rolePermsGrid");
-    var allPermsGrid = $("#allPermsGrid");
 
     //事件
     $("*[data-method]").on("click",function () {
@@ -40,10 +34,8 @@ $(function () {
             $("*[shower]>td>input").textbox("enable");
             //弹出对话框,固定居中
             editDialog.dialog("open").dialog("center");
-            //清空表单中的数据 【只能清空表单元素:文本框,多选,单选,下拉...】
+            //清空表单中的数据
             editForm.form("clear");
-            //清空datagrid中的数据
-            rolePermsGrid.datagrid("loadData",[]);
         },
         update(){
             //获取到选中行，如果没有选中，给出提示，后面代码不在执行
@@ -63,38 +55,27 @@ $(function () {
             editDialog.dialog("open").dialog("center");
             //清空表单中的数据
             editForm.form("clear");
-            //进行数据回显 【只能回显表单元素:文本框,多选,单选,下拉...】
+            //进行数据回显
             editForm.form("load",row);
-            //回显权限数据
-            //复制一个数组
-            var perms = [...row.permissions];
-            rolePermsGrid.datagrid("loadData",perms);
+
+
         },
         //保存数据
         save(){
             //1.准备相应的路径
-            var url = "/role/save";
+            var url = "/menu/save";
             //2.获取隐藏域的id(如果id有值,就修改路径)
-            var roleId = $("#roleId").val();
-            if(roleId){
-                url = "/role/update?_cmd=update";
+            var menuId = $("#menuId").val();
+            if(menuId){
+                url = "/menu/update?_cmd=update";
             }
-            //提交表单中的数据 【只能提交表单元素:文本框,多选,单选,下拉...】
             editForm.form('submit', {
                 //路径
                 url:url,
                 //提交前执行的代码
-                //param:空的(我给它加啥，它就会给后台传啥)
-                onSubmit: function(param){
-                    //1.拿到当前用户的权限
-                    var rows = rolePermsGrid.datagrid("getRows");
-                    //2.遍历它，拼接格式  permissions[0].id = 1
-                    for(var i=0;i<rows.length;i++){
-                        var p = rows[i];
-                        // param.permissions is undefined
-                        param[`permissions[${i}].id`] = p.id;
-                    }
-                    // 验证
+                onSubmit: function(){
+                    // do some check
+                    // return false to prevent submit;
                     return $(this).form('validate');
                 },
                 //成功后的处理
@@ -129,10 +110,12 @@ $(function () {
                    //4.通过Ajax请求进行删除
                     // 参数一:请求路径   参数二:请求参数   参数三:回调
                     // result:是后端返回的结果
-                    $.get("/role/delete",{id:row.id},function (result) {
+                    $.get("/menu/delete",{id:row.id},function (result) {
                         if(result.success){
+                            //5.刷新页面
                             datagrid.datagrid("reload");
                         }else{
+                            //给出错误提示
                             $.messager.alert('提示',`删除失败，原因是:${result.msg}`,"error");
                         }
                     })
@@ -150,54 +133,8 @@ $(function () {
         //窗口关闭方法
         close(){
             editDialog.dialog("close");
-        },
-        //添加权限
-        // index:当前点的第几行 row:点击的行数据
-        addPerms(index, row){
-            //1.拿到当前角色的所有行数据
-            var rows = rolePermsGrid.datagrid("getRows");
-            //2.遍历所有行数据(出现重复则给出提示,后面不执行)
-            for(var r of rows){
-                if(r.id == row.id){
-                    $.messager.show({
-                        title:'错误',
-                        msg:'<h2 style="color: red;">数据已经存在,你聪明一点</h2>',
-                        showType:'slide',
-                        timeout:2000,
-                        style:{
-                            right:'',
-                            top:document.body.scrollTop+document.documentElement.scrollTop,
-                            bottom:''
-                        }
-                    });
-                    return;
-                }
-            }
-
-            //把相应的数据追加进去
-            rolePermsGrid.datagrid("appendRow",row);
-        },
-        //删除权限
-        removePerms(index,row){
-            rolePermsGrid.datagrid("deleteRow",index);
         }
     };
 
 
-    //创建两个grid
-    //1.当前角色拥有的权限Grid
-    rolePermsGrid.datagrid({
-        fitColumns:true,
-        singleSelect:true,
-        fit:true,
-        onDblClickRow:itsource.removePerms
-    })
-    //2.所有权限的Grid
-    allPermsGrid.datagrid({
-        url:'/permission/list',
-        fitColumns:true,
-        singleSelect:true,
-        fit:true,
-        onDblClickRow:itsource.addPerms
-    })
 })
