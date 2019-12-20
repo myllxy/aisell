@@ -34,8 +34,10 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu, Long> implements IMen
                 parentMenus.add(parentMenu);
             }
             parentMenu.getChildren().add(m);
+            System.out.println(m);
+            System.out.println("============" + parentMenu);
         });
-
+        System.out.println("============" + parentMenus);
         return parentMenus;
     }
 }

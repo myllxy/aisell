@@ -11,7 +11,7 @@
         $(function () {
             $('#menuid').tree({
                 method: 'get',
-                url: 'menuTree.json',
+                url: '/menu/findParentMenus',
                 onClick: function (node) {
                     //添加选项卡
                     var text = node.text;

@@ -9,7 +9,6 @@ import java.util.List;
 @Entity
 @Table(name = "menu")
 public class Menu extends BaseDomain {
-
     private String name;
     private String url;
     private String icon;
@@ -41,10 +40,11 @@ public class Menu extends BaseDomain {
      * 1.方法一：由于easyui的菜单需要"text": "系统管理",
      * 所以这里使用getText来进行匹配
      * 2.方法二：
-     *   @Column (name = "name")
-     *   private String text;
-     * 同样能达到以上的效果
+     *
      * @return
+     * @Column (name = " name ")
+     * private String text;
+     * 同样能达到以上的效果
      */
     public String getText() {
         return name;
@@ -92,6 +92,7 @@ public class Menu extends BaseDomain {
                 "name='" + name + '\'' +
                 ", url='" + url + '\'' +
                 ", icon='" + icon + '\'' +
+                ", children=" + children +
                 ", id=" + id +
                 '}';
     }
