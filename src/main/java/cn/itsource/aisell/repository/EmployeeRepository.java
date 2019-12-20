@@ -24,6 +24,9 @@ public interface EmployeeRepository extends BaseRepository<Employee,Long> {
     List<Employee> query04();
     //根据用户名查询数据
     Employee findByUsername(String username);
+    // 根据用户名查询数据,这个方法用于导入excel时查重,如果是上面的findByUsername
+    // 当有n条数据被查到时要报错
+    Employee findFirstByUsername(String username);
     //根据用户名做模糊查询
     List<Employee> findByUsernameLike(String username);
     //根据用户名与邮件进行模糊查询

@@ -25,4 +25,9 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long> impleme
     public Employee findByUsername(String username) {
         return employeeRepository.findByUsername(username);
     }
+
+    @Override
+    public Employee findFirstByUsername(String username) {
+        return employeeRepository.findFirstByUsername(username);
+    }
 }

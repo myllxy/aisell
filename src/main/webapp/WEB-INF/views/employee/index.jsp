@@ -21,12 +21,14 @@
         <a href="#" data-method="update" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
         <a href="#" data-method="delete" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
     </div>
-    <form id="searchForm" method="post">
+    <form action="/employee/export" id="searchForm" method="post">
         用户名: <input name="username" class="easyui-textbox" style="width:80px">
         邮件: <input name="email" class="easyui-textbox" style="width:80px">
         部门：<input id="department" class="easyui-combobox" name="department"
                   data-options="valueField:'id',textField:'name',url:'/department/list'"/>
         <a href="#" data-method="search" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+        <button type="submit" data-method="export" class="easyui-linkbutton" plain="true">导出</button>
+        <a href="/import/index" data-method="export" class="easyui-linkbutton" plain="true">导入</a>
     </form>
     <div id="formDialog" class="easyui-dialog" title="My Dialog" hidden="hidden"
          style="width:100%;max-width:400px;padding:30px 60px;"

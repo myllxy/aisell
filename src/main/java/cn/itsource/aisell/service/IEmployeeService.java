@@ -7,4 +7,5 @@ import cn.itsource.aisell.domain.Employee;
  */
 public interface IEmployeeService extends IBaseService<Employee, Long> {
     Employee findByUsername(String username);
+    Employee findFirstByUsername(String username);
 }

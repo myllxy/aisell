@@ -10,4 +10,5 @@ import java.util.List;
  * 第二个泛型:主键类型
  */
 public interface DepartmentRepository extends BaseRepository<Department,Long> {
+    Department findDepartmentByName(String name);
 }

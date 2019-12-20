@@ -19,7 +19,7 @@ import java.io.FileOutputStream;
 public class ExcelTest {
     @Test
     public void readExcel() throws Exception {
-        File file = new File("D:\\workspacejavaee\\aisell\\src\\test\\resources\\demo.xlsx");
+        File file = new File("demo.xlsx");
         FileInputStream fis = new FileInputStream(file);
         //1.读取一个Excel文件(内存中)
         Workbook wb = new XSSFWorkbook(fis);

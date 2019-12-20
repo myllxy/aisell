@@ -1,5 +1,8 @@
 package cn.itsource.aisell.controller;
 
+import cn.afterturn.easypoi.entity.vo.NormalExcelConstants;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import cn.itsource.aisell.common.JsonResult;
 import cn.itsource.aisell.common.UIPage;
 import cn.itsource.aisell.domain.Employee;
@@ -7,10 +10,12 @@ import cn.itsource.aisell.query.EmployeeQuery;
 import cn.itsource.aisell.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -120,6 +125,23 @@ public class EmployeeController extends BaseController {
             e.printStackTrace();
             return new JsonResult(false, e.getMessage());
         }
+    }
+
+    @RequestMapping("/export")
+    public String export(EmployeeQuery query, ModelMap map, HttpServletRequest request) {
+        List<Employee> list = employeeService.findAll();
+        //搞定路径问题
+        list.forEach(e -> {
+            String realPath = request.getServletContext().getRealPath("");
+            e.setHeadImage(realPath + e.getHeadImage());
+        });
+        ExportParams params = new ExportParams("员工数据", "测试", ExcelType.XSSF);
+        params.setFreezeCol(2); // 设置冻结列
+        map.put(NormalExcelConstants.DATA_LIST, list); // 数据集合
+        map.put(NormalExcelConstants.CLASS, Employee.class);//导出实体
+        map.put(NormalExcelConstants.PARAMS, params);//参数
+        map.put(NormalExcelConstants.FILE_NAME, "员工信息");//文件名称
+        return NormalExcelConstants.EASYPOI_EXCEL_VIEW;
     }
 
 }

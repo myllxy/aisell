@@ -103,7 +103,6 @@ public class MenuController extends BaseController {
     @RequestMapping("/findParentMenus")
     @ResponseBody
     public List<Menu> findParentMenus() {
-        System.out.println("--------------" + menuService.findParentMenus());
         return menuService.findParentMenus();
     }
 
