@@ -9,11 +9,11 @@ import cn.itsource.aisell.domain.Employee;
 import cn.itsource.aisell.query.EmployeeQuery;
 import cn.itsource.aisell.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -59,7 +59,11 @@ public class EmployeeController extends BaseController {
     public JsonResult save(Employee employee) {
         return saveOrUpdate(employee);
     }
-
+    @RequestMapping("/getSuppers")
+    @ResponseBody
+    public List<Employee> findSupperByName() {
+        return employeeService.findSupperByName();
+    }
     /**
      * 加上@ModelAttribute，你每次发送请求都会先执行它对应的方法
      * 此方法用于解决数据丢失问题

@@ -68,8 +68,7 @@
                 </tr>
                 <tr height="40">
                     <td align="center"><a href="javascript:;" class="easyui-linkbutton" onclick="submitForm();">登陆</a>
-                        <a
-                                href="javascript:;" class="easyui-linkbutton" onclick="resetForm();">重置</a></td>
+                        <a href="javascript:;" class="easyui-linkbutton" onclick="resetForm();">重置</a></td>
                 </tr>
             </table>
         </form>

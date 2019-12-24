@@ -9,26 +9,36 @@ import java.util.List;
  * 第一个泛型:代表类型
  * 第二个泛型:主键类型
  */
-public interface EmployeeRepository extends BaseRepository<Employee,Long> {
+public interface EmployeeRepository extends BaseRepository<Employee, Long> {
 
     @Query("select o from Employee o where o.username = ?1")
     Employee query01(String username);
+
     @Query("select o from Employee o where o.username like ?1")
     List<Employee> query02(String username);
+
     @Query("select o from Employee o where o.username like ?1 and o.email like ?2")
-    List<Employee> query03(String username,String email);
-//    @Query("select o from Employee o where o.username like :username and o.email like :email")
-//    List<Employee> query03(@Param("username") String username, @Param("email")String email);
+    List<Employee> query03(String username, String email);
+
+    // @Query("select o from Employee o where o.username like :username and o.email like :email")
+    // List<Employee> query03(@Param("username") String username, @Param("email")String email);
     //原生SQL的使用
-    @Query(nativeQuery = true,value = "select * from employee")
+    @Query(nativeQuery = true, value = "select * from employee")
     List<Employee> query04();
+
     //根据用户名查询数据
     Employee findByUsername(String username);
+
     // 根据用户名查询数据,这个方法用于导入excel时查重,如果是上面的findByUsername
     // 当有n条数据被查到时要报错
     Employee findFirstByUsername(String username);
+
     //根据用户名做模糊查询
     List<Employee> findByUsernameLike(String username);
+
     //根据用户名与邮件进行模糊查询
-    List<Employee> findByUsernameLikeAndEmailLike(String username,String email);
+    List<Employee> findByUsernameLikeAndEmailLike(String username, String email);
+
+    @Query("select o from Employee o where o.department.name like ?1")
+    List<Employee> findSupperByName(String name);
 }

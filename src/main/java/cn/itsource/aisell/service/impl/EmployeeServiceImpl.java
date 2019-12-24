@@ -7,6 +7,8 @@ import cn.itsource.aisell.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long> implements IEmployeeService {
@@ -29,5 +31,10 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long> impleme
     @Override
     public Employee findFirstByUsername(String username) {
         return employeeRepository.findFirstByUsername(username);
+    }
+
+    @Override
+    public List<Employee> findSupperByName() {
+        return employeeRepository.findSupperByName("采购部");
     }
 }
